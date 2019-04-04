@@ -3,4 +3,7 @@ This site is for
 IRIDA DOCS
 ==========
 
-testing time
+[User](/user)
+[Admin](/administrator)
+[Developer](/developer)
+
