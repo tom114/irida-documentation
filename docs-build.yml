@@ -1,0 +1,25 @@
+#####################################################################
+# Integration test suite definition for IRIDA using GitHub Actions
+#####################################################################
+
+name: Integration Tests
+
+on:
+  pull_request: # Run on all pull requests
+  push:
+    branches:   # Run on any push to development or master
+      - development
+      - master
+jobs:
+  docs-build: # Maven integration tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2 #Checkout the project from git
+      - name: Setup Ruby
+      - uses: ruby/setup-ruby@v1.57.1
+   
+      - name: Install libraries
+        run: pushd docs; bundle install; popd
+      - name: Build docs
+        run: pushd docs; bundle exec jekyll build;
