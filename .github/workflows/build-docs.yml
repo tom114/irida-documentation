@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2 #Checkout the project from git
       - name: Setup Ruby
-      - uses: ruby/setup-ruby@v1.57.1
+        uses: ruby/setup-ruby@v1.57.1
    
       - name: Install libraries
         run: pushd docs; bundle install; popd
