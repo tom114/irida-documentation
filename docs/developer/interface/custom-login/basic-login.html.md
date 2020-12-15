@@ -3,9 +3,8 @@
   <head>
     <link rel="stylesheet" th:href="@{/dist/css/login.bundle.css}" />
     <script th:inline="javascript">
-      window.TL = {
-        _BASE_URL: /*[[@{/}]]*/ "/",
-        emailConfigured: /*[[${emailConfigured}]]*/ false
+      window.PAGE = {
+        BASE_URL: /*[[@{"/"}]]*/ "/"
       };
     </script>
   </head>

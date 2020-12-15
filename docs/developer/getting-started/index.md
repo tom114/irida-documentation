@@ -190,7 +190,7 @@ When running IRIDA from the command line, a profile can be set by adding the fol
 
 #### Running IRIDA tests locally
 
-While GitHub Actions runs all IRIDA's testing on every pull request, it is often useful to run IRIDA's test suite locally for debugging or development.  IRIDA's test suite can be run with Maven using the `test` and `verify` goals.
+While Travis CI on GitHub runs all IRIDA's testing on every git push, it is often useful to run IRIDA's test suite locally for debugging or development.  IRIDA's test suite can be run with Maven using the `test` and `verify` goals.
 
 See the [IRIDA tests](#irida-tests) section for more on how IRIDA's tests are developed.
 
@@ -208,7 +208,7 @@ Maven will download all required dependencies and run the full suite of unit tes
 ##### Integration tests
 {:.no_toc}
 
-IRIDA has 5 integration test profiles which splits the integration test suite into functional groups.  This allows GitHub Actions to run the tests in parallel, and local test executions to only run the required portion of the test suite.  The 5 profiles are the following:
+IRIDA has 5 integration test profiles which splits the integration test suite into functional groups.  This allows Travis CI to run the tests in parallel, and local test executions to only run the required portion of the test suite.  The 5 profiles are the following:
 
 * `service_testing` - Runs the service layer and repository testing.
 * `ui_testing` - Integration tests for IRIDA's web interface.
@@ -224,7 +224,7 @@ As the integration tests simulate a running IRIDA installation, in order to run 
 ./run-tests.sh <TEST PROFILE>
 ```
 
-This will clean and setup an empty database for IRIDA on the local machine named **irida_integration_test**.  This will also, for the Galaxy test profile, start up a Galaxy IRIDA testing Docker image running on <http://localhost:48889> and destroy this Docker image afterwards (you can skip destroying the Docker image by passing `--no-kill-docker` to this script).  If you wish to use a different database than the default **irida_integration_test**, you may pass the name of the database with the `-d` flag:
+This will clean and setup an empty database for IRIDA on the local machine named **irida_integration_test**.  This will also, for the Galaxy test profile, start up a Galaxy IRIDA testing Docker image running on <http://localhost:48889> and destory this Docker image afterwards (you can skip destorying the Docker image by passing `--no-kill-docker` to this script).  In order to not overwrite the database **irida_integration_test** you may pass the name of a new database as:
 
 ```bash
 ./run-tests.sh -d <DATABASE> <TEST PROFILE>
@@ -263,43 +263,24 @@ mvn clean package -DskipTests
 This will create the `.war` and `.zip` files for IRIDA release under the `target/` directory.
 
 #### Building IRIDA documentation
-IRIDA documentation can be found in the <https://github.com/phac-nml/irida-docs> GitHub project.  IRIDA's documentation is built using [Jekyll][] and [GitHub Pages](https://pages.github.com/).  Jekyll allows us to write documentation in Markdown format and it will convert the pages to HTML.  We can use Jekyll both for viewing the documentation locally and for publishing to GitHub Pages.  The current documentation can be found at <https://phac-nml.github.io/irida-docs>.
 
-##### Testing IRIDA documentation locally
-To view the documentation locally or make changes, you can checkou the above GitHub project and make changes.  To run the server locally you can run Jekyll to generate the pages.
+IRIDA documentation can be found in the `doc/` directory in the IRIDA root directory.  IRIDA's documentation is built using [Jekyll][].  Jekyll allows us to write documentation in Markdown format and it will convert the pages to HTML for releasing to the web.  The documentation at [http://irida.corefacility.ca/documentation](http://irida.corefacility.ca/documentation) is all generated using this tool.
 
-First you can `cd` into the `docs/` directory and run the following command:
+To test any documentation changes, you can `cd` into the `doc/` directory and run the following command:
 
-```bash
-bundle exec jekyll serve
 ```
-Note that you must have Ruby and Jekyll installed.  See the documentation README.md for info on installing these tools.
+jekyll serve
+```
 
-This command will read the `_config.yml` file in the directory for configuration settings, then serve the built documentation at <http://localhost:4000/irida-docs/>.  As you make changes to documentation files it will automatically regenerate the documentation and reload its webserver.
+This command will read the `_config.yml` file in the directory for configuration settings, then serve the built documentation at http://localhost:4000.  As you make changes to documentation files it will automatically regenerate the documentation and reload its webserver.
 
-##### Updating IRIDA documentation for release
+To build the documentation for release, you can run the following:
 
-The IRIDA documentation is automatically published from the current state of the `master` branch of the <https://github.com/phac-nml/irida-docs> repository.  Below are the steps you should perform to publish a new version of the IRIDA documentation.
-
-1. Generate new JavaDoc from the main IRIDA repository.  For this you can run the following command:
 ```bash
 mvn clean site
 ```
-  This will compile the Java documentation into `target/docs/apidocs`.  This directory should be moved into the irida-docs repository at `docs/developer/apidocs`.  If there are new files you may need to run `git add docs/developer/apidocs` in that repository to add the new files.  You should then commit the new files to a new branch from `development` and push up to GitHub. 
-2. Create a PR and have another IRIDA developer review the changes.  These changes should only exist within the `docs/developer/apidocs` directory so should not require much manual review.
-3. Once changes are ready in the `development` branch, they must be merged into `master` for release.  Manually update the `master` branch by merging `development`.   You should also create a tag for the IRIDA release version.
-```bash
-git checkout development # checkout the development branch
-git pull # ensure the branch is up to date
-git checkout master # checkout the master branch
-git pull # ensure the branch is up to date
-git merge development # merge development into the master branch
-git tag <the current IRIDA version> # tag the current release for easy retrieval of previous versions
-git push origin master # push the new code to GitHub
-git push --tags # push the newly created tag
-```
 
-Shortly after pushing the new changes to GitHub, the updated pages should be reflected on the GitHub Pages site.
+This will build the documentation HTML files into `doc/_site`.  That directory can be placed onto a web server for release.
 
 IRIDA Codebase
 --------------
@@ -441,7 +422,7 @@ While in development we use Hibernate to manage our database changes, in product
 
 Liquibase allows you to create changesets for an application's database in incremental, database agnostic XML files.  In practice IRIDA requires MariaDB or MySQL, but it's still worthwhile to use a tool to properly manage the updates.  Liquibase ensures that all changes to the database are performed in the correct order, and manages this by keeping track of a hashcode of the last applied changeset.  When IRIDA is started, liquibase runs first to check if there are new changesets to be applied, and also that the current state of the database is in the format that IRIDA will be expecting.
 
-When we're doing development, Liquibase is generally not used.  Instead we generally rely on Hibernate's HBM2DDL module which allows us to directly make changes to the model classes and those changes will be reflected into the database. This can be enabled by running IRIDA in the `dev` Spring profile.  Additionally when running in the `dev` profile example data from `src/main/resounrces/ca/corefacility/bioinformatics/irida/sql` will be loaded into the database for test purpose.  Since HBM2DDL is not to be used in production environments, before creating a pull request you should add any changes that are made to the database to a new changeset XML file and test that the database is correctly built in the `prod` Spring profile.  If you've modified any tables in the database it's also worth testing whether those changes can be properly migrated from an existing production database.  To do this you should take a dump of a production IRIDA database, load the dump up on your development machine, and run a server in `prod` profile to ensure the database upgrades correctly.
+When we're doing development, Liquibase is generally not used.  Instead we generally rely on Hibernate's HBM2DDL module which allows us to directly make changes to the model classes and those changes will be reflected into the database.This can be enabled by running IRIDA in the `dev` Spring profile.  Additionally when running in the `dev` profile example data from `src/main/resounrces/ca/corefacility/bioinformatics/irida/sql` will be loaded into the database for test purpose.  Since HBM2DDL is not to be used in production environments, before creating a pull request you should add any changes that are made to the database to a new changeset XML file and test that the database is correctly built in the `prod` Spring profile.  If you've modified any tables in the database it's also worth testing whether those changes can be properly migrated from an existing production database.  To do this you should take a dump of a production IRIDA database, load the dump up on your development machine, and run a server in `prod` profile to ensure the database upgrades correctly.
 
 You can find the existing Liquibase changeset files in `/src/manin/resounces/ca/corefacility/bioinformatics/irida/database/changesets`.
 

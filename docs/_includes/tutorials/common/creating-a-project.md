@@ -1,12 +1,6 @@
-You can create a new project by clicking on the "Projects" menu at the top of the dashboard and selecting "Your Projects".
+You can create a new project by clicking on the "Projects" menu at the top of the dashboard and selecting "Create New Project":
 
-![your-projects]
-
-From the projects listing page click the "Create New Project" button:
-
-![create-new-project]
-
-![Create new project dashboard location.]({{ site.baseurl }}/images/tutorials/common/projects/create-new-project-btn.png)
+![Create new project dashboard location.]({{ site.baseurl }}/images/tutorials/common/projects/create-new-project.png)
 
 When you create a new project, you'll need to provide a project name, and can optionally provide a project organism, a free-form project description, and a link to another web site that has more inforamtion about the project:
 
@@ -31,6 +25,3 @@ IRIDA will automatically generate a numeric project identifier for your project.
 You can create a project with samples already added to the project by using the cart.  Continue creating the project details as described above, but select the checkbox **Add samples in cart to project**.  If this checkbox is enabled any samples in the cart will be automatically added to this project.  If there are any samples which you cannot add to the project, a warning will be displayed below.
 
 ![Create project cart warning]({{ site.baseurl }}/images/tutorials/common/projects/create-project-cart-warning.png)
-
-[create-new-project]: images/create-new-project-btn.png
-[your-projects]: images/your-projects.png

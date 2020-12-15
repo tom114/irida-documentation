@@ -282,7 +282,7 @@ You can view or add reference files by clicking on the "Reference Files" tab in 
 
 ![Project details reference files tab.](images/project-details-reference-files-tab.png)
 
-You can upload a new reference file to the project by clicking on the "Upload Reference File" button or by dragging and dropping files onto it:
+You can upload a new reference file to the project by clicking on the "Upload Reference File" button:
 
 ![Upload reference file button.](images/upload-reference-file-button.png)
 
@@ -304,22 +304,7 @@ Settings for remote synchronized projects can also be managed from the project s
 Synchronizing a remote project
 ------------------------------
 
-IRIDA allows you to synchronize projects between different IRIDA installations.  A remote project appears similar to a local project, but users are not allowed to add samples or sequencing data to a remote project.  Instead data associated with a remote project will be updated from a remote IRIDA instance on a regular schedule.  The only data that can be managed for a remote project is the members that are allowed to view the project and associated sample data.
-
-The following data will be synchronized:
-* Basic project metadata
-* FASTQ sequencing data associated with samples
-* Assemblies associated with samples (including both assemblies created by pipelines within IRIDA, and uploaded assemblies)
-* FAST5 sequencing data associated with samples
-* Sample metadata
-
-The following data **will not** be synchronized:
-* Analysis pipeline results
-* Users & groups on a project
-* Analysis automation settings
-* Reference files
-
-Some of the above items that are not currently synchronized are expected to be available in future IRIDA versions.
+IRIDA allows you to synchronize projects between different IRIDA installations.  A remote project appears similar to a local project, but users are not allowed to add samples or sequencing data to a remote project.  Instead all data associated with a remote project will be pulled from a remote IRIDA instance on a regular schedule.  The only data that can be managed for a remote project is the members that are allowed to view the project and associated sample data.
 
 #### Connecting to a remote instance of IRIDA
 
@@ -347,7 +332,7 @@ After you have selected your project, you can select a synchronization frequency
 
 ![Synchronize details](images/synchronize-details.png)
 
-If you know the URL of the project you want to synchronize, you can directly add the url by checking the `Set URL Manually` and entering it into the input field.
+The advanced section allows you to manually paste in an IRIDA project's REST URL rather than selecting it from the projects dropdown.  This option should only be used by advanced IRIDA users.
 
 Once your project and an appropriate synchronization frequency have been selected, click the **Synchronize Project** button to create your project.
 

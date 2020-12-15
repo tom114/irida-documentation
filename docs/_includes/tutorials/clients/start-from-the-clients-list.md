@@ -1,5 +1,5 @@
-First navigate to the clients page via the admin panel side menu:
+Start by clicking on the "Admin" menu (in the top, right-hand corner of the screen) and selecting "Clients":
 
-![Clients side menu link.](images/clients-side-menu.png)
+![Administrator clients menu.]({{ site.baseurl }}/images/tutorials/clients/admin-clients-menu.png)
 
 The clients list shows all clients that are currently allowed to access the IRIDA REST API.
