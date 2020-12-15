@@ -1,5 +1,5 @@
 # IRIDA Documentation
-This is the repository for the IRIDA documenation GitHub pages site.  View the documentation pages at <https://tom114.github.io/irida-docs/>.  For the main IRIDA repository, see <https://github.com/phac-nml/irida/>.
+This is the repository for the IRIDA documenation GitHub pages site.  View the documentation pages at <https://phac-nml.github.io/irida-documentation/>.  For the main IRIDA repository, see <https://github.com/phac-nml/irida/>.
 
 ## Running the pages locally
 GitHub Pages uses Jekyll to generate IRIDA's documentation.  You can run Jekyll locally to verify your documentation changes locally before pushing to GitHub.
